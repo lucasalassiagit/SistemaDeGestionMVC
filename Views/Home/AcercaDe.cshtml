@@ -1,0 +1,289 @@
+﻿@{
+    ViewData["Title"] = "Acerca de";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header Principal -->
+            <div class="text-center mb-5">
+                <div class="mb-4">
+                    <i class="fas fa-code display-1 text-primary mb-3"></i>
+                </div>
+                <h1 class="display-4 fw-bold text-dark mb-3">Acerca de este Proyecto</h1>
+                <p class="lead text-muted fs-4">Una solución completa desarrollada con .NET MVC y las mejores prácticas</p>
+                <div class="border-bottom mx-auto" style="width: 100px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card Principal -->
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Sección 1: Contexto Académico -->
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-8">
+                            <h3 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-graduation-cap me-2"></i>Contexto del Proyecto
+                            </h3>
+                            <p class="text-muted mb-3">
+                                Esta aplicación fue desarrollada como el proyecto final integrador para la materia <strong>Programación 3</strong>. El objetivo principal era aplicar los conceptos fundamentales de la arquitectura Modelo-Vista-Controlador (MVC) y el desarrollo de aplicaciones web full-stack en un escenario práctico y realista.
+                            </p>
+                            <p class="text-muted">
+                                Originalmente una entrega académica, este proyecto ha sido refactorizado y pulido para ser incluido en mi portafolio profesional, demostrando buenas prácticas de desarrollo, seguridad y diseño.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="bg-primary bg-opacity-10 rounded-3 p-4">
+                                <i class="fas fa-rocket text-primary display-4 mb-3"></i>
+                                <h5 class="fw-bold">Proyecto Integrador</h5>
+                                <p class="text-muted small">De académico a profesional</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección 2: Funcionalidades -->
+                    <div class="mb-5">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold text-primary">
+                                <i class="fas fa-cogs me-2"></i>¿Cómo Funciona?
+                            </h3>
+                            <p class="text-muted">El sistema es un gestor de compras y pedidos diseñado para administrar las operaciones básicas de una pequeña distribuidora o comercio.</p>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Card Autenticación -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-user-shield text-white"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-0">Gestión de Autenticación</h5>
+                                        </div>
+                                        <p class="text-muted mb-0">Sistema de Login seguro con manejo de sesiones y roles (Admin/Usuario).</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Clientes -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-users text-white"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-0">Gestión de Clientes</h5>
+                                        </div>
+                                        <p class="text-muted mb-0">CRUD completo para administrar la información de clientes y direcciones.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Productos -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-box text-white"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-0">Gestión de Productos</h5>
+                                        </div>
+                                        <p class="text-muted mb-0">Administración completa del catálogo, stock, precios de costo y venta.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Pedidos -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-shopping-cart text-white"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-0">Toma de Pedidos</h5>
+                                        </div>
+                                        <p class="text-muted mb-0">Sistema de carrito de compras para registrar pedidos con múltiples productos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección 3: Tecnologías -->
+                    <div class="mb-4">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold text-primary">
+                                <i class="fas fa-laptop-code me-2"></i>Tecnologías Utilizadas
+                            </h3>
+                            <p class="text-muted">Este proyecto está construido sobre el stack de .NET con las siguientes tecnologías:</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <!-- .NET MVC -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-dot-circle text-primary fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">.NET MVC</h6>
+                                        <small class="text-muted">Framework principal</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Entity Framework -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-database text-success fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Entity Framework</h6>
+                                        <small class="text-muted">ORM para acceso a datos</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bootstrap 5 -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-palette text-info fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Bootstrap 5</h6>
+                                        <small class="text-muted">Diseño responsive</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Arquitectura MVC -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-sitemap text-warning fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Arquitectura MVC</h6>
+                                        <small class="text-muted">Patrón de diseño</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sesiones -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-shield-alt text-danger fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Manejo de Sesiones</h6>
+                                        <small class="text-muted">Persistencia de estado</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Font Awesome -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center bg-light rounded-3 p-3 h-100">
+                                    <i class="fas fa-icons text-secondary fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Font Awesome</h6>
+                                        <small class="text-muted">Iconografía</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección 4: Características de Calidad -->
+                    <div class="bg-primary bg-opacity-5 rounded-3 p-4 mt-4">
+                        <h5 class="fw-bold text-primary text-center mb-3">
+                            <i class="fas fa-star me-2"></i>Características de Calidad
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <i class="fas fa-code text-primary fs-4 mb-2"></i>
+                                <h6 class="fw-bold">Código Limpio</h6>
+                                <small class="text-muted">Principios SOLID aplicados</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="fas fa-mobile-alt text-primary fs-4 mb-2"></i>
+                                <h6 class="fw-bold">Responsive</h6>
+                                <small class="text-muted">Adaptable a dispositivos</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="fas fa-shield-alt text-primary fs-4 mb-2"></i>
+                                <h6 class="fw-bold">Seguro</h6>
+                                <small class="text-muted">Manejo de sesiones seguro</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="fas fa-bolt text-primary fs-4 mb-2"></i>
+                                <h6 class="fw-bold">Eficiente</h6>
+                                <small class="text-muted">Optimizado para rendimiento</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Información -->
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    Desarrollado con dedicación para demostrar habilidades en .NET MVC - @DateTime.Now.Year
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .feature-card {
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .bg-light {
+        transition: all 0.3s ease;
+    }
+
+        .bg-light:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+            transform: translateY(-2px);
+        }
+</style>
+
+<!-- Script para efectos interactivos -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efectos hover en las cards de características
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Efectos en las tecnologías
+        const techItems = document.querySelectorAll('.bg-light');
+        techItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>

@@ -1,0 +1,241 @@
+﻿@using System.Linq
+@model CrudMVCApp.ViewModels.MostrarDetalleViewModel
+
+@{
+    ViewData["Title"] = $"Detalle de Pedido N° {Model.Pedido.Id}";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header Principal -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Detalle de Pedido</h1>
+                <p class="text-muted fs-5">Información completa del pedido registrado</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card Principal -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Información del Pedido -->
+                    <div class="row mb-5">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 50px; height: 50px;">
+                                    <i class="fas fa-receipt text-white fs-5"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-bold text-dark mb-1">Pedido N° @Model.Pedido.Id</h3>
+                                    <p class="text-muted mb-0">Realizado el @Model.Pedido.Fecha.ToString("dd/MM/yyyy 'a las' HH:mm") hs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información General -->
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-primary mb-3">
+                                        <i class="fas fa-user me-2"></i>Información del Cliente
+                                    </h5>
+                                    <div class="mb-2">
+                                        <strong class="text-muted">Nombre:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Persona.Nombre @Model.Pedido.Persona.Apellido</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong class="text-muted">DNI:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Persona.Dni</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">ID Cliente:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Persona.Id</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-primary mb-3">
+                                        <i class="fas fa-user-tie me-2"></i>Información del Vendedor
+                                    </h5>
+                                    <div class="mb-2">
+                                        <strong class="text-muted">Usuario:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Usuario?.user</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong class="text-muted">Fecha:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Fecha.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">Hora:</strong>
+                                        <span class="fw-semibold">@Model.Pedido.Fecha.ToString("HH:mm") hs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productos del Pedido -->
+                    <div class="mb-4">
+                        <h4 class="fw-bold text-dark mb-3">
+                            <i class="fas fa-boxes me-2"></i>Productos Incluidos
+                        </h4>
+
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th class="ps-4 py-3 fw-semibold">Producto</th>
+                                                <th class="py-3 fw-semibold text-center">Cantidad</th>
+                                                <th class="py-3 fw-semibold text-center">Precio Unitario</th>
+                                                <th class="pe-4 py-3 fw-semibold text-end">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.DetalleTotal)
+                                            {
+                                                <tr class="border-bottom">
+                                                    <td class="ps-4 py-3">
+                                                        <div class="fw-medium">@item.NombreProducto</div>
+                                                    </td>
+                                                    <td class="py-3 text-center">
+                                                        <span class="badge bg-primary fs-6">@item.Cantidad</span>
+                                                    </td>
+                                                    <td class="py-3 text-center fw-semibold">
+                                                        @item.PrecioUnitario.ToString("C")
+                                                    </td>
+                                                    <td class="pe-4 py-3 text-end fw-bold text-success">
+                                                        @item.Subtotal.ToString("C")
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen Total -->
+                    <div class="card border-0 shadow-sm rounded-3 bg-light">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold text-muted mb-1">Resumen del Pedido</h5>
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-box me-1"></i>
+                                        @Model.DetalleTotal.Count producto(s) incluido(s)
+                                    </p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h3 class="fw-bold text-primary mb-0">
+                                        @Model.Total.ToString("C")
+                                    </h3>
+                                    <small class="text-muted">Total General</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-flex justify-content-between align-items-center mt-5 pt-3">
+                        @if ((Context.Session.GetString("Tipo") == "usuario"))
+                        {
+                            <a asp-action="IndexUsuario" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver a Mis Pedidos
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                        }
+
+                        <!-- Botón adicional para imprimir o exportar -->
+                        <button onclick="window.print()" class="btn btn-outline-primary rounded-4 px-4 py-2">
+                            <i class="fas fa-print me-2"></i> Imprimir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales para impresión -->
+<style>
+    @@media print {
+        .btn, .border-bottom, .bg-opacity-10 {
+            display: none !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .text-primary {
+            color: #000 !important;
+        }
+    }
+
+    .table th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .bg-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+    }
+</style>
+
+<!-- Script para mejoras interactivas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efecto hover en las filas de la tabla
+        const tableRows = document.querySelectorAll('tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f8f9fa';
+                this.style.transform = 'translateY(-1px)';
+                this.style.transition = 'all 0.2s ease';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+                this.style.transform = '';
+            });
+        });
+
+        // Efecto en las cards de información
+        const infoCards = document.querySelectorAll('.card.shadow-sm');
+        infoCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'all 0.3s ease';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>

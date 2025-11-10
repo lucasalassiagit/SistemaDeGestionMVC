@@ -1,0 +1,301 @@
+﻿@model IEnumerable<CrudMVCApp.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="container mt-4">
+    <!-- Header y Controles -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5 fw-bold text-primary mb-2">Gestión de Productos</h1>
+            <p class="text-muted">Administre el catálogo de productos del sistema</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+            <i class="fas fa-plus-circle me-2"></i> Nuevo Producto
+        </a>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    @{
+        var productosActivos = Model.Count(p => p.Activo == true);
+        var totalProductos = Model.Count();
+        var stockTotal = Model.Where(p => p.Activo == true).Sum(p => p.Stock);
+        var valorTotalInventario = Model.Where(p => p.Activo == true).Sum(p => p.Stock * p.PrecioVta);
+    }
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-boxes text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@productosActivos</h4>
+                            <small class="text-muted">Productos Activos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-cubes text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@stockTotal</h4>
+                            <small class="text-muted">Total en Stock</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-dollar-sign text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">$@valorTotalInventario.ToString("F0")</h4>
+                            <small class="text-muted">Valor Inventario</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-sync-alt text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@DateTime.Now.ToString("dd/MM")</h4>
+                            <small class="text-muted">Actualizado hoy</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Principal de la Tabla -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-0">
+            @if (Model.Any(p => p.Activo == true))
+            {
+                <!-- Tabla de Productos -->
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-primary">
+                            <tr>
+                                <th class="ps-4 py-3 fw-semibold">
+                                    <i class="fas fa-box me-2"></i>Producto
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-align-left me-2"></i>Descripción
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-shopping-cart me-2"></i>Compra
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-tag me-2"></i>Venta
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-cubes me-2"></i>Stock
+                                </th>
+                                <th class="text-center pe-4 py-3 fw-semibold">
+                                    <i class="fas fa-cogs me-2"></i>Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                @if(item.Activo == true)
+                                {
+                                    {
+                                        var margen = item.PrecioVta - item.PrecioCompra;
+                                        var porcentajeMargen = item.PrecioCompra > 0 ? (margen / item.PrecioCompra * 100) : 0;
+                                        var margenColor = margen > 0 ? "success" : margen < 0 ? "danger" : "warning";
+                                        var margenIcon = margen > 0 ? "fa-arrow-up" : margen < 0 ? "fa-arrow-down" : "fa-minus";
+                                        
+                                        var stockColor = item.Stock > 10 ? "success" : item.Stock > 0 ? "warning" : "danger";
+                                        var stockText = item.Stock > 10 ? "Disponible" : item.Stock > 0 ? "Bajo Stock" : "Sin Stock";
+                                    }
+                                    <tr class="border-bottom">
+                                        <td class="ps-4 py-3">
+                                            <div class="fw-semibold">@item.Nombre</div>
+                                        </td>
+                                        <td class="py-3">
+                                            @if (string.IsNullOrEmpty(item.Descripcion))
+                                            {
+                                                <span class="text-muted fst-italic">Sin descripción</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-truncate d-inline-block" style="max-width: 200px;" 
+                                                      data-bs-toggle="tooltip" title="@item.Descripcion">
+                                                    @item.Descripcion
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="py-3">
+                                            <span class="fw-semibold text-success">$@item.PrecioCompra.ToString("F2")</span>
+                                        </td>
+                                        <td class="py-3">
+                                            <span class="fw-semibold text-primary">$@item.PrecioVta.ToString("F2")</span>
+                                        </td>
+                                        <td class="py-3">
+                                            <span class="fw-semibold text-primary" data-bs-toggle="tooltip" title="stockText">
+                                                @item.Stock unidades
+                                            </span>
+                                        </td>
+                                        <td class="pe-4 py-3">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <!-- Botón Editar -->
+                                                <a asp-action="Edit" asp-route-id="@item.Id" 
+                                                   class="btn btn-outline-primary btn-sm rounded-3 px-3 py-2"
+                                                   data-bs-toggle="tooltip" title="Editar producto">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                
+                                                <!-- Botón Detalles -->
+                                                <a asp-action="Details" asp-route-id="@item.Id" 
+                                                   class="btn btn-outline-info btn-sm rounded-3 px-3 py-2"
+                                                   data-bs-toggle="tooltip" title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                
+                                                <!-- Botón Eliminar -->
+                                                <a asp-action="Delete" asp-route-id="@item.Id" 
+                                                   class="btn btn-outline-danger btn-sm rounded-3 px-3 py-2"
+                                                   data-bs-toggle="tooltip" title="Eliminar producto">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <!-- Mensaje cuando no hay productos activos -->
+                <div class="text-center py-5">
+                    <i class="fas fa-box-open display-1 text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay productos activos</h4>
+                    <p class="text-muted mb-4">Todos los productos registrados están inactivos o no hay productos en el sistema.</p>
+                    <a asp-action="Create" class="btn btn-primary rounded-4 px-4 py-2">
+                        <i class="fas fa-plus-circle me-2"></i> Crear Primer Producto
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            // Efecto hover en las filas
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = '';
+                    this.style.transform = '';
+                });
+            });
+
+            // Efecto hover en las cards de estadísticas
+            const statCards = document.querySelectorAll('.card.shadow-sm');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Efecto en los badges de stock y margen
+            const badges = document.querySelectorAll('.badge');
+            badges.forEach(badge => {
+                badge.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                badge.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .table th {
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    .table td {
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
+    
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+    
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .text-truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .fst-italic {
+        font-style: italic !important;
+    }
+</style>

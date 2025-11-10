@@ -1,0 +1,254 @@
+﻿@model CrudMVCApp.Models.Producto
+
+@{
+    ViewData["Title"] = "Eliminar Producto";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header con icono de advertencia -->
+            <div class="text-center mb-5">
+                <div class="mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-danger mb-2">Eliminar Producto</h1>
+                <p class="text-muted fs-5">Esta acción no se puede deshacer. ¿Está seguro de continuar?</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #dc3545 !important;"></div>
+            </div>
+
+            <!-- Card container con énfasis en peligro -->
+            <div class="card shadow-lg border-0 rounded-4 border-danger" style="border-width: 2px !important;">
+                <div class="card-body p-4 p-md-5">
+                    <div class="alert alert-warning rounded-3 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Advertencia:</strong> Está a punto de eliminar permanentemente este producto del inventario.
+                        </div>
+                    </div>
+
+                    <!-- Información del producto a eliminar -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 60px; height: 60px;">
+                                    <i class="fas fa-box text-white fs-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-bold text-dark mb-1">@Model.Nombre</h3>
+                                    <p class="text-muted mb-0">Producto ID: @Model.Id</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-danger bg-opacity-10 rounded-3 p-3">
+                                <h5 class="fw-bold text-danger mb-1">Acción Crítica</h5>
+                                <span class="badge bg-danger fs-6">Eliminación</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Producto -->
+                    <h5 class="fw-semibold text-muted mb-4">Información del Producto:</h5>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-dark mb-3">Información General</h6>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Nombre:</strong>
+                                        <span class="fw-semibold d-block">@Model.Nombre</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Descripción:</strong>
+                                        <span class="fw-semibold d-block">@(string.IsNullOrEmpty(Model.Descripcion) ? "Sin descripción" : Model.Descripcion)</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">Stock Actual:</strong>
+                                        <span class="fw-semibold d-block">
+                                            @if (Model.Stock > 0)
+                                            {
+                                                <span class="badge bg-success">@Model.Stock unidades</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Sin stock</span>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-dark mb-3">Información Financiera</h6>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Precio de Compra:</strong>
+                                        <span class="fw-semibold d-block text-success">$@Model.PrecioCompra.ToString("F2")</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Precio de Venta:</strong>
+                                        <span class="fw-semibold d-block text-primary">$@Model.PrecioVta.ToString("F2")</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">Margen:</strong>
+                                        @{
+                                            var margen = Model.PrecioVta - Model.PrecioCompra;
+                                            var porcentajeMargen = Model.PrecioCompra > 0 ? (margen / Model.PrecioCompra * 100) : 0;
+                                            var margenColor = margen > 0 ? "success" : margen < 0 ? "danger" : "warning";
+                                        }
+                                        <span class="fw-semibold d-block text-@margenColor">
+                                            $@margen.ToString("F2") (@porcentajeMargen.ToString("F1")%)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advertencias específicas según el stock -->
+                    @if (Model.Stock > 0)
+                    {
+                        <div class="alert alert-danger rounded-3 mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-boxes me-2"></i>
+                                <div>
+                                    <strong>¡Atención! Stock disponible</strong>
+                                    <ul class="mb-0 mt-1">
+                                        <li>Actualmente hay <strong>@Model.Stock unidades</strong> en inventario</li>
+                                        <li>La eliminación afectará el control de stock</li>
+                                        <li>Considere ajustar el stock a 0 en lugar de eliminar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info rounded-3 mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>
+                                    <strong>Producto sin stock</strong>
+                                    <p class="mb-0 mt-1">Este producto actualmente no tiene unidades en inventario.</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Advertencia general -->
+                    <div class="alert alert-warning rounded-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-radiation me-2"></i>
+                            <div>
+                                <strong>Consecuencias de la eliminación:</strong>
+                                <ul class="mb-0 mt-1">
+                                    <li>El producto será removido permanentemente del catálogo</li>
+                                    <li>No podrá ser incluido en nuevos pedidos</li>
+                                    <li>La información histórica de ventas se mantendrá</li>
+                                    <li>Esta acción no se puede deshacer</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de eliminación -->
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-trash-alt me-2"></i> Confirmar Eliminación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales para enfatizar la acción peligrosa -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+    .border-danger {
+        border-color: #dc3545 !important;
+    }
+
+    .alert-warning {
+        border-left: 4px solid #ffc107;
+    }
+
+    .alert-danger {
+        border-left: 4px solid #dc3545;
+    }
+
+    .alert-info {
+        border-left: 4px solid #0dcaf0;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+</style>
+
+<!-- Script para efectos interactivos -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efecto hover en el botón de eliminar
+        const deleteBtn = document.querySelector('.btn-danger');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            deleteBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        }
+
+        // Efecto en las cards de información
+        const infoCards = document.querySelectorAll('.card.shadow-sm');
+        infoCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'all 0.3s ease';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Resaltar información importante
+        const stockElement = document.querySelector('.badge.bg-success');
+        if (stockElement) {
+            stockElement.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            stockElement.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+    });
+</script>

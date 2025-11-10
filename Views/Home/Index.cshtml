@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "Home";
+
+    var usuarioLogueado = Context.Session.GetString("Usuario");
+    var tipoUsuario = Context.Session.GetString("Tipo");
+    var estaLogueado = !string.IsNullOrEmpty(usuarioLogueado);
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Hero Section -->
+            <div class="text-center mb-5">
+                <div class="mb-4">
+                    <i class="fas fa-shopping-cart display-1 text-primary mb-3"></i>
+                </div>
+
+                <h1 class="display-4 fw-bold text-dark mb-3">
+                    @if (estaLogueado)
+                    {
+                        <span class="text-primary">¡Bienvenido, </span>
+                    
+                        <span>@usuarioLogueado!</span>
+                    }
+                    else
+                    {
+                        <span class="text-primary">Sistema de Gestión</span>
+                    
+                        <span> de Compras</span>
+                    }
+                </h1>
+
+                <p class="lead text-muted fs-4 mb-4">
+                    @if (estaLogueado)
+                    {
+                        <span>Su rol es: </span>
+                        <span class="badge bg-primary fs-5 px-3 py-2 rounded-3">
+                            <i class="fas fa-user-shield me-1"></i>
+                            @(tipoUsuario == "admin" ? "Administrador" : "Usuario")
+                        </span>
+                    }
+                    else
+                    {
+                        <span>Una solución completa para administrar clientes, productos y pedidos</span>
+                    }
+                </p>
+            </div>
+
+            <!-- Main Card -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-md-5">
+                    @if (estaLogueado)
+                    {
+                        if (tipoUsuario == "admin")
+                        {
+                            <!-- Panel de Administrador -->
+                            <div class="text-center mb-5">
+                                <h2 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-crown text-warning me-2"></i>Panel de Administrador
+                                </h2>
+                                <p class="text-muted fs-5">Gestione todos los aspectos del sistema</p>
+                            </div>
+
+                            <div class="row g-4">
+                                <!-- Tarjeta Clientes -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                        <div class="card-body text-center p-4">
+                                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fas fa-users text-primary fs-3"></i>
+                                            </div>
+                                            <h5 class="fw-bold text-dark mb-3">Gestión de Clientes</h5>
+                                            <p class="text-muted mb-4">Administre la información de clientes y direcciones</p>
+                                            <a class="btn btn-primary rounded-3 w-100 py-2 fw-semibold"
+                                               asp-controller="Personas" asp-action="Index">
+                                                <i class="fas fa-arrow-right me-2"></i>Acceder
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tarjeta Productos -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                        <div class="card-body text-center p-4">
+                                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fas fa-box text-success fs-3"></i>
+                                            </div>
+                                            <h5 class="fw-bold text-dark mb-3">Gestión de Productos</h5>
+                                            <p class="text-muted mb-4">Controle el inventario y catálogo de productos</p>
+                                            <a class="btn btn-success rounded-3 w-100 py-2 fw-semibold"
+                                               asp-controller="Productos" asp-action="Index">
+                                                <i class="fas fa-arrow-right me-2"></i>Acceder
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tarjeta Pedidos -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                        <div class="card-body text-center p-4">
+                                            <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 80px; height: 80px;">
+                                                <i class="fas fa-list-alt text-info fs-3"></i>
+                                            </div>
+                                            <h5 class="fw-bold text-dark mb-3">Todos los Pedidos</h5>
+                                            <p class="text-muted mb-4">Vea y administre todos los pedidos del sistema</p>
+                                            <a class="btn btn-info rounded-3 w-100 py-2 fw-semibold text-white"
+                                               asp-controller="Pedidos" asp-action="Index">
+                                                <i class="fas fa-arrow-right me-2"></i>Acceder
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Panel de Usuario -->
+                            <div class="text-center mb-5">
+                                <h2 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-user text-primary me-2"></i>Panel de Usuario
+                                </h2>
+                                <p class="text-muted fs-5">Gestione sus pedidos y actividades</p>
+                            </div>
+
+                            <div class="row justify-content-center g-4">
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                        <div class="card-body text-center p-5">
+                                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-4"
+                                                 style="width: 100px; height: 100px;">
+                                                <i class="fas fa-plus text-primary fs-2"></i>
+                                            </div>
+                                            <h4 class="fw-bold text-dark mb-3">Crear Nuevo Pedido</h4>
+                                            <p class="text-muted mb-4">Inicie un nuevo proceso de compra</p>
+                                            <a class="btn btn-primary btn-lg rounded-3 px-4 py-3 fw-semibold"
+                                               asp-controller="Pedidos" asp-action="Crear">
+                                                <i class="fas fa-plus me-2"></i>Crear Pedido
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3 feature-card">
+                                        <div class="card-body text-center p-5">
+                                            <div class="bg-secondary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-4"
+                                                 style="width: 100px; height: 100px;">
+                                                <i class="fas fa-history text-secondary fs-2"></i>
+                                            </div>
+                                            <h4 class="fw-bold text-dark mb-3">Historial de Pedidos</h4>
+                                            <p class="text-muted mb-4">Revise sus pedidos anteriores</p>
+                                            <a class="btn btn-outline-secondary btn-lg rounded-3 px-4 py-3 fw-semibold"
+                                               asp-controller="Pedidos" asp-action="IndexUsuario">
+                                                <i class="fas fa-history me-2"></i>Ver Mis Pedidos
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Usuario no logueado -->
+                        <div class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-lock display-1 text-muted mb-3"></i>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-3">Acceso Requerido</h3>
+                            <p class="text-muted fs-5 mb-4">Por favor, inicie sesión para acceder al sistema de gestión</p>
+                            <a class="btn btn-primary btn-lg rounded-4 px-5 py-3 fw-semibold"
+                               asp-controller="Login" asp-action="Login">
+                                <i class="fas fa-sign-in-alt me-2"></i> Iniciar Sesión
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .feature-card {
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+</style>
+
+<!-- Script para efectos interactivos -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efectos hover en las cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Efecto en el badge de rol
+        const roleBadge = document.querySelector('.badge');
+        if (roleBadge) {
+            roleBadge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            roleBadge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+    });
+</script>

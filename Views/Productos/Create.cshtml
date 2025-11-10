@@ -1,0 +1,231 @@
+﻿@model CrudMVCApp.Models.Producto
+
+@{
+    ViewData["Title"] = "Crear Producto";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Nuevo Producto</h1>
+                <p class="text-muted fs-5">Complete el formulario para registrar un nuevo producto</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
+
+                        <!-- Información Básica del Producto -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                                    <input asp-for="Nombre" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el nombre del producto" />
+                                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Stock" class="form-label fw-semibold"></label>
+                                    <input asp-for="Stock" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Cantidad en stock" />
+                                    <span asp-validation-for="Stock" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="Descripcion" class="form-label fw-semibold"></label>
+                                <input asp-for="Descripcion" class="form-control border-dark rounded-3"
+                                       style="border-width: 2px !important;"
+                                       placeholder="Ingrese una descripción del producto" />
+                                <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Precios -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="PrecioCompra" class="form-label fw-semibold">
+                                        <i class="fas fa-shopping-cart me-2 text-success"></i>Precio de Compra
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-dollar-sign text-success"></i>
+                                        </span>
+                                        <input asp-for="PrecioCompra" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               type="number" step="0.01" min="0.01"
+                                               placeholder="0.00" />
+                                    </div>
+                                    <span asp-validation-for="PrecioCompra" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="PrecioVta" class="form-label fw-semibold">
+                                        <i class="fas fa-tag me-2 text-primary"></i>Precio de Venta
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-dollar-sign text-primary"></i>
+                                        </span>
+                                        <input asp-for="PrecioVta" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               type="number" step="0.01" min="0.01"
+                                               placeholder="0.00" />
+                                    </div>
+                                    <span asp-validation-for="PrecioVta" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Margen (calculado automáticamente) -->
+                        <div class="card border-0 shadow-sm rounded-3 bg-light mb-4">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-chart-line me-2"></i>Información de Margen
+                                </h6>
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Precio Compra</small>
+                                        <strong class="text-success" id="precioCompraDisplay">$0.00</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Precio Venta</small>
+                                        <strong class="text-primary" id="precioVentaDisplay">$0.00</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Margen</small>
+                                        <strong class="text-info" id="margenDisplay">$0.00 (0%)</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones mejorados -->
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-box me-2"></i> Crear Producto
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para calcular margen en tiempo real -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar foco a los campos con borde más oscuro
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Función para calcular y mostrar margen
+            function calcularMargen() {
+                const precioCompra = parseFloat(document.getElementById('PrecioCompra').value) || 0;
+                const precioVenta = parseFloat(document.getElementById('PrecioVta').value) || 0;
+
+                const margen = precioVenta - precioCompra;
+                const porcentajeMargen = precioCompra > 0 ? ((margen / precioCompra) * 100) : 0;
+
+                document.getElementById('precioCompraDisplay').textContent = '$' + precioCompra.toFixed(2);
+                document.getElementById('precioVentaDisplay').textContent = '$' + precioVenta.toFixed(2);
+                document.getElementById('margenDisplay').textContent = '$' + margen.toFixed(2) + ' (' + porcentajeMargen.toFixed(1) + '%)';
+
+                // Cambiar color del margen según sea positivo o negativo
+                const margenElement = document.getElementById('margenDisplay');
+                if (margen < 0) {
+                    margenElement.className = 'text-danger';
+                } else if (margen === 0) {
+                    margenElement.className = 'text-warning';
+                } else {
+                    margenElement.className = 'text-success';
+                }
+            }
+
+            // Escuchar cambios en los campos de precio
+            document.getElementById('PrecioCompra').addEventListener('input', calcularMargen);
+            document.getElementById('PrecioVta').addEventListener('input', calcularMargen);
+
+            // Calcular margen inicial
+            calcularMargen();
+
+            // Efectos en los input groups
+            const inputGroups = document.querySelectorAll('.input-group');
+            inputGroups.forEach(group => {
+                group.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                group.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .input-group-text {
+        border-width: 2px 0 2px 2px !important;
+        border-color: #000 !important;
+    }
+
+    .form-control {
+        border-left: none !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .bg-light {
+        transition: all 0.3s ease;
+    }
+
+        .bg-light:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        }
+</style>

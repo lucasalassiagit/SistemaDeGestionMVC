@@ -1,0 +1,105 @@
+﻿@model CrudMVCApp.Models.Direccion
+
+@{
+    ViewData["Title"] = "Eliminar Dirección";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="text-center mb-5">
+                <div class="mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-danger mb-2">Eliminar Dirección</h1>
+                <p class="text-muted fs-5">Esta acción no se puede deshacer. ¿Está seguro de continuar?</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #dc3545 !important;"></div>
+            </div>
+
+            <!-- Card container con énfasis en peligro -->
+            <div class="card shadow-lg border-0 rounded-4 border-danger" style="border-width: 2px !important;">
+                <div class="card-body p-4 p-md-5">
+                    <div class="alert alert-warning rounded-3 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Advertencia: </strong> Está a punto de eliminar permanentemente esta dirección.
+                        </div>
+                    </div>
+
+                    <!-- Información de la dirección a eliminar -->
+                    <h5 class="fw-semibold text-muted mb-4">Información de la Dirección:</h5>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <dl class="row mb-0">
+                                <!-- Campo Calle -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Calle</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Model.Calle
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Ciudad -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Ciudad</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Model.Ciudad
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Código Postal -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Código Postal</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Model.CodigoPostal
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Persona -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Persona Asociada</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @(Model.Persona?.Id.ToString() ?? "N/A")
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de eliminación -->
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-trash-alt me-2"></i> Confirmar Eliminación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+</style>

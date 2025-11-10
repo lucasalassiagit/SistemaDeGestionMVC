@@ -1,0 +1,216 @@
+﻿@model Persona
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Nuevo Cliente</h1>
+                <p class="text-muted fs-5">Complete el formulario para registrar un nuevo cliente</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
+
+                        <!-- Información Personal -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                                    <input asp-for="Nombre" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el nombre" />
+                                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Apellido" class="form-label fw-semibold"></label>
+                                    <input asp-for="Apellido" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el apellido" />
+                                    <span asp-validation-for="Apellido" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Dni" class="form-label fw-semibold"></label>
+                                    <input asp-for="Dni" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el DNI" />
+                                    <span asp-validation-for="Dni" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Cuit" class="form-label fw-semibold"></label>
+                                    <input asp-for="Cuit" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el CUIT" />
+                                    <span asp-validation-for="Cuit" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Género -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Género</label>
+                                    <select name="Genero" asp-for="Genero"
+                                            class="form-control border-dark rounded-3"
+                                            style="border-width: 2px !important;" required>
+                                        <option value="">-- Seleccionar --</option>
+                                        <option value="m">Masculino</option>
+                                        <option value="f">Femenino</option>
+                                        <option value="o">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formas de Pago -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="fas fa-credit-card me-2"></i>Formas de Pago Preferidas
+                            </h5>
+
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-check p-3 border rounded-3 h-100">
+                                                <input asp-for="Efectivo" class="form-check-input" />
+                                                <label asp-for="Efectivo" class="form-check-label fw-semibold">
+                                                    <i class="fas fa-money-bill-wave me-2 text-success"></i>Efectivo
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check p-3 border rounded-3 h-100">
+                                                <input asp-for="Tarjeta" class="form-check-input" />
+                                                <label asp-for="Tarjeta" class="form-check-label fw-semibold">
+                                                    <i class="fas fa-credit-card me-2 text-primary"></i>Tarjeta
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check p-3 border rounded-3 h-100">
+                                                <input asp-for="Transferencia" class="form-check-input" />
+                                                <label asp-for="Transferencia" class="form-check-label fw-semibold">
+                                                    <i class="fas fa-exchange-alt me-2 text-info"></i>Transferencia
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones mejorados -->
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-user-plus me-2"></i> Crear Cliente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para mejorar la experiencia de usuario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar foco a los campos con borde más oscuro
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Efectos en los checkboxes de formas de pago
+            const formChecks = document.querySelectorAll('.form-check');
+            formChecks.forEach(check => {
+                const checkbox = check.querySelector('.form-check-input');
+                const container = check.querySelector('.border');
+
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        container.style.borderColor = '#0d6efd';
+                        container.style.backgroundColor = '#f8f9fa';
+                    } else {
+                        container.style.borderColor = '#dee2e6';
+                        container.style.backgroundColor = '';
+                    }
+                });
+
+                // Efecto hover en los contenedores de checkboxes
+                container.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                container.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .form-check {
+        cursor: pointer;
+    }
+
+    .form-check-input {
+        transform: scale(1.2);
+        margin-right: 10px;
+    }
+
+    .border {
+        transition: all 0.3s ease;
+        border: 2px solid #dee2e6 !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+</style>

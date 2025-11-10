@@ -1,0 +1,204 @@
+﻿@model CrudMVCApp.Models.Persona
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Detalles del Cliente</h1>
+                <p class="text-muted fs-5">Información completa del cliente registrado</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Información Principal -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 60px; height: 60px;">
+                                    <i class="fas fa-user text-white fs-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-bold text-dark mb-1">@Model.Nombre @Model.Apellido</h3>
+                                    <p class="text-muted mb-0">Cliente ID: @Model.Id</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-opacity-10 rounded-3 p-3">
+                                <h5 class="fw-bold text-primary mb-1">Estado</h5>
+                                <span class="badge bg-success fs-6">Activo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Personal -->
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-primary mb-3">
+                                        <i class="fas fa-id-card me-2"></i>Información Personal
+                                    </h5>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Nombre:</strong>
+                                        <span class="fw-semibold d-block fs-5">@Model.Nombre</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Apellido:</strong>
+                                        <span class="fw-semibold d-block fs-5">@Model.Apellido</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">DNI:</strong>
+                                        <span class="fw-semibold d-block fs-5">@Model.Dni</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">CUIT:</strong>
+                                        <span class="fw-semibold d-block fs-5">@Model.Cuit</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-primary mb-3">
+                                        <i class="fas fa-user-tag me-2"></i>Información Adicional
+                                    </h5>
+                                    <div class="mb-3">
+                                        <strong class="text-muted">Género:</strong>
+                                        <span class="fw-semibold d-block fs-5">
+                                            @(Model.Genero == 'm' ? "Masculino" :
+                                              Model.Genero == 'f' ? "Femenino" :
+                                              Model.Genero == 'o' ? "Otro" : "No especificado")
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-muted">Formas de Pago:</strong>
+                                        <div class="mt-2">
+                                            @if (Model.Efectivo)
+                                            {
+                                                <span class="badge bg-success me-2 mb-2 fs-6">
+                                                    <i class="fas fa-money-bill-wave me-1"></i>Efectivo
+                                                </span>
+                                            }
+                                            @if (Model.Tarjeta)
+                                            {
+                                                <span class="badge bg-primary me-2 mb-2 fs-6">
+                                                    <i class="fas fa-credit-card me-1"></i>Tarjeta
+                                                </span>
+                                            }
+                                            @if (Model.Transferencia)
+                                            {
+                                                <span class="badge bg-info me-2 mb-2 fs-6">
+                                                    <i class="fas fa-exchange-alt me-1"></i>Transferencia
+                                                </span>
+                                            }
+                                            @if (!Model.Efectivo && !Model.Tarjeta && !Model.Transferencia)
+                                            {
+                                                <span class="badge bg-secondary fs-6">No especificadas</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen de Preferencias -->
+                    <div class="card border-0 shadow-sm rounded-3 bg-light">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h5 class="fw-bold text-dark mb-2">Preferencias del Cliente</h5>
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Cliente registrado con @(Model.Efectivo || Model.Tarjeta || Model.Transferencia ?
+                                                                                "formas de pago preferidas" : "sin formas de pago especificadas")
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="bg-white rounded-3 p-3">
+                                        <small class="text-muted d-block">ID Cliente</small>
+                                        <strong class="fs-4 text-primary">@Model.Id</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-flex justify-content-between align-items-center mt-5 pt-3">
+                        <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                            <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-edit me-2"></i> Editar Cliente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+    }
+
+    .bg-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+</style>
+
+<!-- Script para efectos interactivos -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efecto hover en las cards de información
+        const infoCards = document.querySelectorAll('.card.shadow-sm');
+        infoCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'all 0.3s ease';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Efecto en los badges de formas de pago
+        const badges = document.querySelectorAll('.badge');
+        badges.forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>

@@ -1,0 +1,187 @@
+﻿@model CrudMVCApp.Models.Usuario
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <!-- Header principal -->
+            <div class="text-center mb-4">
+                <h1 class="display-4 fw-bold text-primary mb-3">Bienvenido</h1>
+                <p class="text-muted fs-5">Inicie sesión para acceder al sistema</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card de credenciales -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-lg rounded-4 h-100">
+                        <div class="card-header bg-primary text-white rounded-4 rounded-bottom-0 py-4">
+                            <h4 class="text-center mb-0 fw-semibold">
+                                <i class="fas fa-key me-2"></i>Credenciales de Demo
+                            </h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-user-shield display-1 text-primary mb-3"></i>
+                                <p class="text-muted">Use estas credenciales para probar la aplicación</p>
+                            </div>
+
+                            <div class="credential-card bg-light rounded-3 p-3 mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-user-circle text-primary me-2"></i>
+                                    <strong class="text-dark">Usuario:</strong>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <code class="fs-5 text-dark">demo</code>
+                                </div>
+                            </div>
+
+                            <div class="credential-card bg-light rounded-3 p-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-lock text-primary me-2"></i>
+                                    <strong class="text-dark">Contraseña:</strong>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <code class="fs-5 text-dark">demo123</code>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Rol de usuario estándar
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de login -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-lg rounded-4">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="text-center mb-4">
+                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                     style="width: 60px; height: 60px;">
+                                    <i class="fas fa-sign-in-alt text-white fs-4"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark">Iniciar Sesión</h3>
+                                <p class="text-muted">Ingrese sus credenciales</p>
+                            </div>
+
+                            @if (ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger rounded-3 d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <span>@ViewBag.ErrorMessage</span>
+                                </div>
+                            }
+
+                            <form asp-action="Login" method="post" asp-controller="Login">
+                                <div class="mb-4">
+                                    <label asp-for="user" class="form-label fw-semibold">Usuario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-user text-primary"></i>
+                                        </span>
+                                        <input asp-for="user" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               placeholder="Ingrese su usuario" />
+                                    </div>
+                                    <span asp-validation-for="user" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Clave" class="form-label fw-semibold">Contraseña</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-lock text-primary"></i>
+                                        </span>
+                                        <input asp-for="Clave" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               type="password" placeholder="Ingrese su contraseña" />
+                                    </div>
+                                    <span asp-validation-for="Clave" class="text-danger small"></span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-semibold py-3">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Entrar al Sistema
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efectos de focus en inputs
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(13, 110, 253, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Función para copiar credenciales
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const text = this.getAttribute('data-text');
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i>';
+                        this.classList.remove('btn-outline-primary');
+                        this.classList.add('btn-success');
+
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.classList.remove('btn-success');
+                            this.classList.add('btn-outline-primary');
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .credential-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+
+    .input-group-text {
+        border-width: 2px 0 2px 2px !important;
+        border-color: #000 !important;
+    }
+
+    .form-control {
+        border-left: none !important;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+</style>

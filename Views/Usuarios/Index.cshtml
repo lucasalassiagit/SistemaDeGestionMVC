@@ -1,0 +1,344 @@
+﻿@model IEnumerable<CrudMVCApp.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Lista Usuarios";
+}
+
+<div class="container mt-4">
+    <!-- Header y Controles -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5 fw-bold text-primary mb-2">Gestión de Usuarios</h1>
+            <p class="text-muted">Administre los usuarios del sistema</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+            <i class="fas fa-user-plus me-2"></i> Nuevo Usuario
+        </a>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    @{
+        var usuariosActivos = Model.Count(p => p.Activo == true);
+        var totalUsuarios = Model.Count();
+        var adminCount = Model.Count(u => u.Tipo == "admin" && u.Activo == true);
+        var userCount = Model.Count(u => u.Tipo == "usuario" && u.Activo == true);
+        var usuarioActual = Context.Session.GetString("Usuario");
+    }
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-users text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@usuariosActivos</h4>
+                            <small class="text-muted">Usuarios Activos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-user-shield text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@adminCount</h4>
+                            <small class="text-muted">Administradores</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@userCount</h4>
+                            <small class="text-muted">Usuarios</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width: 50px; height: 50px;">
+                            <i class="fas fa-sync-alt text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">@DateTime.Now.ToString("dd/MM")</h4>
+                            <small class="text-muted">Actualizado hoy</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Principal de la Tabla -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-0">
+            @if (Model.Any(p => p.Activo == true))
+            {
+                <!-- Tabla de Usuarios -->
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-primary">
+                            <tr>
+                                <th class="ps-4 py-3 fw-semibold">
+                                    <i class="fas fa-id-card me-2"></i>ID
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-user me-2"></i>Usuario
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-lock me-2"></i>Contraseña
+                                </th>
+                                <th class="py-3 fw-semibold">
+                                    <i class="fas fa-user-tag me-2"></i>Tipo
+                                </th>
+                                <th class="text-center pe-4 py-3 fw-semibold">
+                                    <i class="fas fa-cogs me-2"></i>Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                @if (item.Activo == true)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="ps-4 py-3">
+                                            <code class="bg-light px-2 py-1 rounded-2">@item.Id</code>
+                                        </td>
+                                        <td class="py-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-@(item.Tipo == "admin" ? "success" : "primary") rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                     style="width: 35px; height: 35px;">
+                                                    <i class="fas fa-@(item.Tipo == "admin" ? "user-shield" : "user") text-white small"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">@item.user</div>
+                                                    @if (item.user == usuarioActual)
+                                                    {
+                                                        <small class="text-success">
+                                                            <i class="fas fa-circle me-1"></i>Usted
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3">
+                                            <code class="bg-light px-2 py-1 rounded-2">••••••••</code>
+                                            <small class="text-muted d-block mt-1">Encriptada</small>
+                                        </td>
+                                        <td class="py-3">
+                                            @if (item.Tipo == "admin")
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-user-shield me-1"></i>Administrador
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-primary">
+                                                    <i class="fas fa-user me-1"></i>Usuario
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="pe-4 py-3">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                @if (item.user != "admin" && item.user != usuarioActual)
+                                                {
+                                                    <!-- Botón Editar -->
+                                                    <a asp-action="Edit" asp-route-id="@item.Id"
+                                                       class="btn btn-outline-primary btn-sm rounded-3 px-3 py-2"
+                                                       data-bs-toggle="tooltip" title="Editar usuario">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                    <!-- Botón Eliminar -->
+                                                    <a asp-action="Delete" asp-route-id="@item.Id"
+                                                       class="btn btn-outline-danger btn-sm rounded-3 px-3 py-2"
+                                                       data-bs-toggle="tooltip" title="Eliminar usuario">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                }
+                                                else if (item.user != "admin")
+                                                {
+                                                    <!-- Solo Editar para el usuario actual -->
+                                                    <a asp-action="Edit" asp-route-id="@item.Id"
+                                                       class="btn btn-outline-primary btn-sm rounded-3 px-3 py-2"
+                                                       data-bs-toggle="tooltip" title="Editar mi usuario">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                    <!-- Badge informativo -->
+                                                    <span class="badge bg-info" data-bs-toggle="tooltip" title="No se puede eliminar el usuario actual">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </span>
+                                                }
+                                                else if (item.user == "admin")
+                                                {
+                                                    <!-- Usuario admin protegido -->
+                                                    <span class="badge bg-warning" data-bs-toggle="tooltip" title="Usuario administrador protegido">
+                                                        <i class="fas fa-shield-alt me-1"></i>Protegido
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            }
+            else
+            {
+                <!-- Mensaje cuando no hay usuarios activos -->
+                <div class="text-center py-5">
+                    <i class="fas fa-users-slash display-1 text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay usuarios activos</h4>
+                    <p class="text-muted mb-4">Todos los usuarios registrados están inactivos.</p>
+                    <a asp-action="Create" class="btn btn-primary rounded-4 px-4 py-2">
+                        <i class="fas fa-user-plus me-2"></i> Crear Primer Usuario
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="mt-3">
+        <div class="alert alert-info rounded-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-shield-alt me-2 fs-4"></i>
+                <div>
+                    <strong>Políticas de Seguridad:</strong>
+                    <ul class="mb-0 mt-1">
+                        <li>No se puede eliminar el usuario administrador principal</li>
+                        <li>Las contraseñas se almacenan encriptadas</li>
+                        <li>Los cambios de rol requieren permisos especiales</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            // Efecto hover en las filas
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = '';
+                    this.style.transform = '';
+                });
+            });
+
+            // Efecto hover en las cards de estadísticas
+            const statCards = document.querySelectorAll('.card.shadow-sm');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Efecto en los badges de tipo de usuario
+            const badges = document.querySelectorAll('.badge');
+            badges.forEach(badge => {
+                badge.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                badge.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Resaltar fila del usuario actual
+            const currentUserRows = document.querySelectorAll('tbody tr');
+            currentUserRows.forEach(row => {
+                if (row.querySelector('.text-success')) {
+                    row.style.backgroundColor = '#f0f9ff';
+                    row.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = '#e3f2fd';
+                    });
+                    row.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = '#f0f9ff';
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .table th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    code {
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+    }
+</style>

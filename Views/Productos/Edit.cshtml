@@ -1,0 +1,289 @@
+﻿@model CrudMVCApp.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Productos";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Editar Producto</h1>
+                <p class="text-muted fs-5">Modifique los datos del producto seleccionado</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Información Básica del Producto -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                                    <input asp-for="Nombre" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el nombre del producto" />
+                                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="Stock" class="form-label fw-semibold"></label>
+                                    <input asp-for="Stock" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Cantidad en stock" />
+                                    <span asp-validation-for="Stock" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="Descripcion" class="form-label fw-semibold"></label>
+                                <input asp-for="Descripcion" class="form-control border-dark rounded-3"
+                                       style="border-width: 2px !important;"
+                                       placeholder="Ingrese una descripción del producto" />
+                                <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Precios -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="PrecioCompra" class="form-label fw-semibold">
+                                        <i class="fas fa-shopping-cart me-2 text-success"></i>Precio de Compra
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-dollar-sign text-success"></i>
+                                        </span>
+                                        <input asp-for="PrecioCompra" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               type="number" step="0.01" min="0.01"
+                                               placeholder="0.00" />
+                                    </div>
+                                    <span asp-validation-for="PrecioCompra" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="PrecioVta" class="form-label fw-semibold">
+                                        <i class="fas fa-tag me-2 text-primary"></i>Precio de Venta
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-dollar-sign text-primary"></i>
+                                        </span>
+                                        <input asp-for="PrecioVta" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               type="number" step="0.01" min="0.01"
+                                               placeholder="0.00" />
+                                    </div>
+                                    <span asp-validation-for="PrecioVta" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Margen (calculado automáticamente) -->
+                        <div class="card border-0 shadow-sm rounded-3 bg-light mb-4">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-chart-line me-2"></i>Información de Margen Actual
+                                </h6>
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Precio Compra</small>
+                                        <strong class="text-success" id="precioCompraDisplay">$@Model.PrecioCompra.ToString("F2")</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Precio Venta</small>
+                                        <strong class="text-primary" id="precioVentaDisplay">$@Model.PrecioVta.ToString("F2")</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @{
+                                            var margenActual = Model.PrecioVta - Model.PrecioCompra;
+                                            var porcentajeMargenActual = Model.PrecioCompra > 0 ? ((margenActual / Model.PrecioCompra) * 100) : 0;
+                                            var margenColorActual = margenActual > 0 ? "success" : margenActual < 0 ? "danger" : "warning";
+                                        }
+                                        <small class="text-muted d-block">Margen Actual</small>
+                                        <strong class="text-@margenColorActual" id="margenActualDisplay">
+                                            $@margenActual.ToString("F2") (@porcentajeMargenActual.ToString("F1")%)
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Previsualización del nuevo margen -->
+                        <div class="card border-0 shadow-sm rounded-3 border-primary mb-4" id="nuevoMargenCard" style="display: none;">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="fas fa-sync-alt me-2"></i>Previsualización del Nuevo Margen
+                                </h6>
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Nuevo Precio Compra</small>
+                                        <strong class="text-success" id="nuevoPrecioCompraDisplay">$0.00</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Nuevo Precio Venta</small>
+                                        <strong class="text-primary" id="nuevoPrecioVentaDisplay">$0.00</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Nuevo Margen</small>
+                                        <strong class="text-info" id="nuevoMargenDisplay">$0.00 (0%)</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del ID -->
+                        <div class="alert alert-info rounded-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>
+                                    <strong>Producto ID:</strong> @Model.Id
+                                    <small class="text-muted d-block mt-1">Este identificador no se puede modificar</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones mejorados -->
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-save me-2"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para calcular margen en tiempo real -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar foco a los campos con borde más oscuro
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Función para calcular y mostrar nuevo margen
+            function calcularNuevoMargen() {
+                const precioCompra = parseFloat(document.getElementById('PrecioCompra').value) || 0;
+                const precioVenta = parseFloat(document.getElementById('PrecioVta').value) || 0;
+
+                const margen = precioVenta - precioCompra;
+                const porcentajeMargen = precioCompra > 0 ? ((margen / precioCompra) * 100) : 0;
+
+                document.getElementById('nuevoPrecioCompraDisplay').textContent = '$' + precioCompra.toFixed(2);
+                document.getElementById('nuevoPrecioVentaDisplay').textContent = '$' + precioVenta.toFixed(2);
+                document.getElementById('nuevoMargenDisplay').textContent = '$' + margen.toFixed(2) + ' (' + porcentajeMargen.toFixed(1) + '%)';
+
+                // Cambiar color del margen según sea positivo o negativo
+                const margenElement = document.getElementById('nuevoMargenDisplay');
+                if (margen < 0) {
+                    margenElement.className = 'text-danger';
+                } else if (margen === 0) {
+                    margenElement.className = 'text-warning';
+                } else {
+                    margenElement.className = 'text-success';
+                }
+
+                // Mostrar u ocultar la card según si hay cambios
+                const precioCompraOriginal = @Model.PrecioCompra;
+                const precioVentaOriginal = @Model.PrecioVta;
+
+                if (precioCompra !== precioCompraOriginal || precioVenta !== precioVentaOriginal) {
+                    document.getElementById('nuevoMargenCard').style.display = 'block';
+                } else {
+                    document.getElementById('nuevoMargenCard').style.display = 'none';
+                }
+            }
+
+            // Escuchar cambios en los campos de precio
+            document.getElementById('PrecioCompra').addEventListener('input', calcularNuevoMargen);
+            document.getElementById('PrecioVta').addEventListener('input', calcularNuevoMargen);
+
+            // Efectos en los input groups
+            const inputGroups = document.querySelectorAll('.input-group');
+            inputGroups.forEach(group => {
+                group.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                group.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Inicializar valores de previsualización
+            calcularNuevoMargen();
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .input-group-text {
+        border-width: 2px 0 2px 2px !important;
+        border-color: #000 !important;
+    }
+
+    .form-control {
+        border-left: none !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .border-primary {
+        border-color: #0d6efd !important;
+        border-width: 2px !important;
+    }
+
+    #nuevoMargenCard {
+        transition: all 0.3s ease;
+    }
+
+        #nuevoMargenCard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+        }
+</style>

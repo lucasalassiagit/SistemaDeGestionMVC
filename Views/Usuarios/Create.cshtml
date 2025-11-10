@@ -1,0 +1,223 @@
+﻿@model CrudMVCApp.Models.Usuario
+
+@{
+    ViewData["Title"] = "Crear usuario";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Nuevo Usuario</h1>
+                <p class="text-muted fs-5">Registre un nuevo usuario en el sistema</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Mensaje de error -->
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger rounded-3 d-flex align-items-center mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span>@ViewBag.ErrorMessage</span>
+                        </div>
+                    }
+
+                    <form asp-action="Create" method="post">
+                        <!-- Información de Usuario -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="user" class="form-label fw-semibold">
+                                        <i class="fas fa-user me-2"></i>Nombre de Usuario
+                                    </label>
+                                    <input asp-for="user" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el nombre de usuario" />
+                                    <span asp-validation-for="user" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="Clave" class="form-label fw-semibold">
+                                        <i class="fas fa-lock me-2"></i>Contraseña
+                                    </label>
+                                    <input asp-for="Clave" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           type="password" placeholder="Ingrese la contraseña" />
+                                    <span asp-validation-for="Clave" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tipo de Usuario -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="fas fa-user-tag me-2"></i>Tipo de Usuario
+                            </h5>
+
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check p-3 border rounded-3 h-100 role-option">
+                                                <input class="form-check-input" type="radio" name="tipo" id="usuario" value="usuario" required>
+                                                <label class="form-check-label fw-semibold" for="usuario">
+                                                    <i class="fas fa-user me-2 text-primary"></i>Usuario
+                                                </label>
+                                                <small class="text-muted d-block mt-2">
+                                                    Permisos básicos para gestionar pedidos
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check p-3 border rounded-3 h-100 role-option">
+                                                <input class="form-check-input" type="radio" name="tipo" id="admin" value="admin" required>
+                                                <label class="form-check-label fw-semibold" for="admin">
+                                                    <i class="fas fa-user-shield me-2 text-success"></i>Administrador
+                                                </label>
+                                                <small class="text-muted d-block mt-2">
+                                                    Acceso completo a todas las funcionalidades
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Permisos -->
+                        <div class="alert alert-info rounded-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>
+                                    <strong>Diferencias entre roles:</strong>
+                                    <ul class="mb-0 mt-1">
+                                        <li><strong>Usuario:</strong> Puede crear y ver sus propios pedidos</li>
+                                        <li><strong>Administrador:</strong> Acceso completo a clientes, productos y todos los pedidos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones mejorados -->
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-user-plus me-2"></i> Crear Usuario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para mejorar la experiencia de usuario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar foco a los campos con borde más oscuro
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Efectos en los radio buttons de roles
+            const roleOptions = document.querySelectorAll('.role-option');
+            roleOptions.forEach(option => {
+                const radio = option.querySelector('.form-check-input');
+
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Remover selección de otros
+                        roleOptions.forEach(opt => {
+                            opt.style.borderColor = '#dee2e6';
+                            opt.style.backgroundColor = '';
+                        });
+
+                        // Aplicar estilo al seleccionado
+                        if (this.value === 'usuario') {
+                            option.style.borderColor = '#0d6efd';
+                            option.style.backgroundColor = '#f8f9fa';
+                        } else if (this.value === 'admin') {
+                            option.style.borderColor = '#198754';
+                            option.style.backgroundColor = '#f8f9fa';
+                        }
+                    }
+                });
+
+                // Efecto hover en los contenedores de roles
+                option.addEventListener('mouseenter', function() {
+                    if (!this.querySelector('.form-check-input').checked) {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.transition = 'all 0.3s ease';
+                    }
+                });
+                option.addEventListener('mouseleave', function() {
+                    if (!this.querySelector('.form-check-input').checked) {
+                        this.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            // Validación adicional antes del envío
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const tipoSeleccionado = document.querySelector('input[name="tipo"]:checked');
+                if (!tipoSeleccionado) {
+                    e.preventDefault();
+                    alert('Por favor, seleccione un tipo de usuario.');
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .form-check {
+        cursor: pointer;
+    }
+
+    .form-check-input {
+        transform: scale(1.2);
+        margin-right: 10px;
+    }
+
+    .role-option {
+        transition: all 0.3s ease;
+        border: 2px solid #dee2e6 !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+</style>

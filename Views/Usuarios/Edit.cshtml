@@ -1,0 +1,250 @@
+﻿@model CrudMVCApp.Models.Usuario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Header mejorado -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Editar Usuario</h1>
+                <p class="text-muted fs-5">Modifique los datos del usuario seleccionado</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Información del Usuario -->
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fas fa-user-edit text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="fw-bold text-dark mb-1">@Model.user</h3>
+                                        <p class="text-muted mb-0">Editando usuario ID: @Model.Id</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+                                    <h5 class="fw-bold text-primary mb-1">Tipo Actual</h5>
+                                    <span class="badge bg-@(Model.Tipo == "admin" ? "success" : "primary") fs-6">
+                                        @(Model.Tipo == "admin" ? "Administrador" : "Usuario")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos de Edición -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="user" class="form-label fw-semibold">
+                                        <i class="fas fa-user me-2"></i>Nombre de Usuario
+                                    </label>
+                                    <input asp-for="user" class="form-control border-dark rounded-3"
+                                           style="border-width: 2px !important;"
+                                           placeholder="Ingrese el nombre de usuario" />
+                                    <span asp-validation-for="user" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label asp-for="Clave" class="form-label fw-semibold">
+                                        <i class="fas fa-lock me-2"></i>Contraseña
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3">
+                                            <i class="fas fa-key text-primary"></i>
+                                        </span>
+                                        <input asp-for="Clave" class="form-control border-start-0 rounded-end-3 border-dark"
+                                               style="border-width: 2px !important;"
+                                               placeholder="Ingrese la nueva contraseña" />
+                                    </div>
+                                    <span asp-validation-for="Clave" class="text-danger small"></span>
+                                    <small class="text-muted mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Deje en blanco para mantener la contraseña actual
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Tipo de Usuario -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="fas fa-user-tag me-2"></i>Tipo de Usuario
+                            </h5>
+
+                            <div class="alert alert-info rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <div>
+                                        <strong>Tipo actual:</strong>
+                                        <span class="badge bg-@(Model.Tipo == "admin" ? "success" : "primary")">
+                                            @(Model.Tipo == "admin" ? "Administrador" : "Usuario")
+                                        </span>
+                                        <small class="text-muted d-block mt-1">
+                                            El tipo de usuario no se puede modificar desde esta vista.
+                                            Contacte al administrador del sistema para cambios de rol.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Seguridad -->
+                        <div class="card border-0 shadow-sm rounded-3 bg-light mb-4">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-shield-alt me-2"></i>Información de Seguridad
+                                </h6>
+                                <div class="row text-center">
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Usuario ID</small>
+                                        <strong class="text-primary">@Model.Id</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Tipo</small>
+                                        <strong class="text-@(Model.Tipo == "admin" ? "success" : "primary")">
+                                            @(Model.Tipo == "admin" ? "Admin" : "Usuario")
+                                        </strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Estado</small>
+                                        <strong class="text-success">Activo</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del ID -->
+                        <div class="alert alert-warning rounded-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <div>
+                                    <strong>Usuario ID:</strong> @Model.Id
+                                    <small class="text-muted d-block mt-1">
+                                        Este identificador no se puede modificar. Los cambios se aplicarán inmediatamente al guardar.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones mejorados -->
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-save me-2"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para mejorar la experiencia de usuario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar foco a los campos con borde más oscuro
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Efectos en el input group de contraseña
+            const passwordInputGroup = document.querySelector('.input-group');
+            if (passwordInputGroup) {
+                passwordInputGroup.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                passwordInputGroup.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            }
+
+            // Validación de contraseña (opcional)
+            const passwordInput = document.getElementById('Clave');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    if (this.value.length > 0 && this.value.length < 6) {
+                        this.style.borderColor = '#dc3545';
+                    } else if (this.value.length >= 6) {
+                        this.style.borderColor = '#198754';
+                    } else {
+                        this.style.borderColor = '#000';
+                    }
+                });
+            }
+
+            // Mostrar información del tipo de usuario
+            const tipoBadge = document.querySelector('.badge');
+            if (tipoBadge) {
+                tipoBadge.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                tipoBadge.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .input-group-text {
+        border-width: 2px 0 2px 2px !important;
+        border-color: #000 !important;
+    }
+
+    .form-control {
+        border-left: none !important;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+</style>

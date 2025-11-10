@@ -1,0 +1,276 @@
+﻿@using CrudMVCApp.ViewModels
+@model PedidoViewModel
+
+@{
+    ViewData["Title"] = "Registrar Pedido";
+    var clientes = ViewBag.Clientes as List<CrudMVCApp.Models.Persona> ?? new List<CrudMVCApp.Models.Persona>();
+    var productos = ViewBag.Productos as List<CrudMVCApp.Models.Producto> ?? new List<CrudMVCApp.Models.Producto>();
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header Principal -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Registrar Nuevo Pedido</h1>
+                <p class="text-muted fs-5">Complete los pasos para crear un nuevo pedido</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card Principal -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Paso 1: Selección de Cliente -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <span class="text-white fw-bold">1</span>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-0">Seleccionar Cliente</h4>
+                        </div>
+
+                        <form asp-action="Crear" method="get" class="row g-3 align-items-center">
+                            <div class="col-md-8">
+                                <select name="personaId" onchange="this.form.submit()"
+                                        class="form-control border-dark rounded-3"
+                                        style="border-width: 2px !important;">
+                                    <option value="">-- Seleccione un Cliente --</option>
+                                    @foreach (var c in clientes)
+                                    {
+                                        <option value="@c.Id" selected="@(Model.PersonaId == c.Id ? "selected" : null)">
+                                            @c.Nombre @c.Apellido
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Seleccione un cliente para continuar
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Mensajes de alerta -->
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger rounded-3 d-flex align-items-center mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span>@TempData["Error"]</span>
+                        </div>
+                    }
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success rounded-3 d-flex align-items-center mb-4">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <span>@TempData["Success"]</span>
+                        </div>
+                    }
+
+                    <!-- Contenido condicional cuando hay cliente seleccionado -->
+                    @if (Model.PersonaId > 0)
+                    {
+                        <!-- Paso 2: Agregar Productos -->
+                        <div class="mb-5">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 40px; height: 40px;">
+                                    <span class="text-white fw-bold">2</span>
+                                </div>
+                                <h4 class="fw-bold text-dark mb-0">Agregar Productos</h4>
+                            </div>
+
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-4">
+                                    <form asp-action="AgregarProducto" method="post" class="row g-3 align-items-end">
+                                        <input type="hidden" name="personaId" value="@Model.PersonaId" />
+
+                                        <div class="col-md-5">
+                                            <label class="form-label fw-semibold">Producto</label>
+                                            <select name="productoId" id="productoSelect"
+                                                    class="form-control border-dark rounded-3"
+                                                    style="border-width: 2px !important;" required>
+                                                <option value="">-- Seleccionar producto --</option>
+                                                @foreach (var p in productos)
+                                                {
+                                                    <option value="@p.Id">@p.Nombre - (@p.PrecioVta.ToString("C"))</option>
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Cantidad</label>
+                                            <input type="number" name="cantidad" min="1" value="1"
+                                                   class="form-control border-dark rounded-3"
+                                                   style="border-width: 2px !important;" required />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-success rounded-3 w-100 py-2 fw-semibold">
+                                                <i class="fas fa-plus-circle me-2"></i> Agregar al Carrito
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paso 3: Detalle del Pedido -->
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 40px; height: 40px;">
+                                    <span class="text-white fw-bold">3</span>
+                                </div>
+                                <h4 class="fw-bold text-dark mb-0">Detalle del Pedido</h4>
+                            </div>
+
+                            @if (Model.Detalles.Any())
+                            {
+                                <!-- Tabla de productos -->
+                                <div class="card border-0 shadow-sm rounded-3 mb-4">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-primary">
+                                                    <tr>
+                                                        <th class="ps-4 py-3 fw-semibold">Cantidad</th>
+                                                        <th class="py-3 fw-semibold">Descripción</th>
+                                                        <th class="py-3 fw-semibold">Precio Unitario</th>
+                                                        <th class="py-3 fw-semibold">Subtotal</th>
+                                                        <th class="text-center pe-4 py-3 fw-semibold">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Detalles)
+                                                    {
+                                                        <tr class="border-bottom">
+                                                            <td class="ps-4 py-3 fw-medium">@item.Cantidad</td>
+                                                            <td class="py-3">@item.NombreProducto</td>
+                                                            <td class="py-3">@item.PrecioUnitario.ToString("C")</td>
+                                                            <td class="py-3 fw-semibold text-success">@item.Subtotal.ToString("C")</td>
+                                                            <td class="pe-4 py-3">
+                                                                <div class="d-flex justify-content-center">
+                                                                    <form asp-action="EliminarProducto" method="post" class="d-inline">
+                                                                        <input type="hidden" name="productoId" value="@item.ProductoId" />
+                                                                        <input type="hidden" name="personaId" value="@Model.PersonaId" />
+                                                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-3 px-3"
+                                                                                data-bs-toggle="tooltip">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Resumen y confirmación -->
+                                <div class="card border-0 shadow-sm rounded-3">
+                                    <div class="card-body p-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <strong class="text-muted">Usuario:</strong>
+                                                    <span class="fw-semibold">@Context.Session.GetString("Usuario")</span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <strong class="text-muted">Total Productos:</strong>
+                                                    <span class="fw-semibold">@Model.TotalProductos</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-end">
+                                                <h3 class="fw-bold text-primary mb-3">
+                                                    Monto Total: @Model.Total.ToString("C")
+                                                </h3>
+                                                <form asp-action="ConfirmarPedido" method="post">
+                                                    <input type="hidden" name="personaId" value="@Model.PersonaId" />
+                                                    <button type="submit" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                                        <i class="fas fa-check me-2"></i> Confirmar Pedido
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- Mensaje carrito vacío -->
+                                <div class="card border-0 shadow-sm rounded-3">
+                                    <div class="card-body text-center py-5">
+                                        <i class="fas fa-shopping-cart display-1 text-muted mb-3"></i>
+                                        <h4 class="text-muted mb-3">Carrito Vacío</h4>
+                                        <p class="text-muted mb-0">Aún no hay productos agregados a este pedido.</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Mensaje inicial -->
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-body text-center py-5">
+                                <i class="fas fa-user-plus display-1 text-muted mb-3"></i>
+                                <h4 class="text-muted mb-3">Seleccione un Cliente</h4>
+                                <p class="text-muted mb-0">Por favor, seleccione un cliente para comenzar a crear el pedido.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            // Efectos de focus en inputs
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(0, 0, 0, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#000';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    .table th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+</style>

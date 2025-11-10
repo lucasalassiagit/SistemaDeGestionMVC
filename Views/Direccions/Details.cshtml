@@ -1,0 +1,86 @@
+﻿@model CrudMVCApp.Models.Direccion
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary mb-2">Detalles de Dirección</h1>
+                <p class="text-muted fs-5">Información completa de la dirección registrada</p>
+                <div class="border-bottom mx-auto" style="width: 80px; border-color: #0d6efd !important;"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <dl class="row mb-0">
+                                <!-- Campo Calle -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Calle</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Html.DisplayFor(model => model.Calle)
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Ciudad -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Ciudad</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Html.DisplayFor(model => model.Ciudad)
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Código Postal -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Código Postal</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Html.DisplayFor(model => model.CodigoPostal)
+                                    </dd>
+                                </div>
+
+                                <!-- Campo Persona -->
+                                <div class="col-sm-6 mb-4">
+                                    <dt class="fw-bold text-muted mb-2 text-uppercase small">Persona Asociada</dt>
+                                    <dd class="fs-5 fw-semibold border-bottom pb-2" style="border-color: #dee2e6 !important;">
+                                        @Html.DisplayFor(model => model.Persona.Id)
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-4 mt-3">
+                        <a asp-action="Index" class="btn btn-outline-secondary rounded-4 px-4 py-2">
+                            <i class="fas fa-arrow-left me-2"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary rounded-4 px-4 py-2 fw-semibold">
+                                <i class="fas fa-edit me-2"></i> Editar Dirección
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    .border-bottom {
+        transition: border-color 0.3s ease;
+    }
+
+    .card:hover .border-bottom {
+        border-color: #0d6efd !important;
+    }
+</style>

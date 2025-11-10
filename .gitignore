@@ -1,0 +1,45 @@
+# .gitignore para un proyecto ASP.NET MVC / Core
+
+## Ignora los directorios de compilacion (binarios)
+## Estos archivos se generan cada vez que compilas tu proyecto.
+[Bb]in/
+[Oo]bj/
+
+## Ignora los archivos especificos del IDE (Visual Studio)
+## Contienen configuraciones de tu maquina local y no deben compartirse.
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+## Ignora archivos de configuracion de usuario y publicacion
+## ¡Estos pueden contener contraseñas y secretos!
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+Properties/launchSettings.json
+appsettings.Development.json
+
+## Ignora la cache y los paquetes de NuGet
+## Estos se deben restaurar usando 'dotnet restore' o desde Visual Studio
+packages/
+*.nupkg
+*.nuget.props
+*.nuget.targets
+
+## Ignora resultados de tests
+TestResults/
+*.trx
+
+## Ignora archivos de log y temporales
+*.log
+*.clef
+*.tmp
+
+## Ignora directorios de front-end (si usas npm/yarn/libman)
+node_modules/
+wwwroot/lib/
+
+## Ignora archivos de sistema operativo
+.DS_Store
+Thumbs.db
